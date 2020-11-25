@@ -1,0 +1,23 @@
+pluginManagement {
+  repositories {
+    mavenLocal()
+    maven { url "https://dl.bintray.com/spinnaker/gradle/" }
+    gradlePluginPortal()
+  }
+}
+
+rootProject.name = "colonySandboxPlugin"
+
+//include "random-wait-orca", "random-wait-orca-test", "random-wait-deck", "colony-orca"
+include "colony-orca"
+
+def setBuildFile(project) {
+  project.buildFileName = "${project.name}.gradle"
+  project.children.each {
+    setBuildFile(it)
+  }
+}
+
+rootProject.children.each {
+  setBuildFile(it)
+}
