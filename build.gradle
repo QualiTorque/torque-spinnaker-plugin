@@ -19,7 +19,7 @@ repositories {
 }
 
 spinnakerBundle {
-  pluginId = "Colony.SandboxPlugin"
+  pluginId = "Quali.ColonySandboxPlugin"
   description = "Cloudshell Colony sandbox plugin"
   provider = "https://quali.com"
   version = rootProject.version
