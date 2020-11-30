@@ -19,13 +19,6 @@ import {
 
 import './ColonyEndSandboxStage.less';
 
-/*
-  IStageConfigProps defines properties passed to all Spinnaker Stages.
-  See IStageConfigProps.ts (https://github.com/spinnaker/deck/blob/master/app/scripts/modules/core/src/pipeline/config/stages/common/IStageConfigProps.ts) for a complete list of properties.
-  Pass a JSON object to the `updateStageField` method to add the `maxWaitTime` to the Stage.
-
-  This method returns JSX (https://reactjs.org/docs/introducing-jsx.html) that gets displayed in the Spinnaker UI.
- */
 export function ColonyEndSandboxStageConfig(props: IStageConfigProps) {
   return (
     <div className="ColonyEndSandboxStageConfig">

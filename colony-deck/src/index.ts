@@ -1,8 +1,9 @@
 import { IDeckPlugin } from '@spinnaker/core';
-import { colonySandboxStage } from './ColonySandboxStage';
+import { colonyStartSandboxStage } from './ColonyStartSandboxStage';
 import { colonyEndSandboxStage } from './ColonyEndSandboxStage'
 import { initialize } from './initialize';
 
 export const plugin: IDeckPlugin = {
   initialize,
-  stages: [colonySandboxStage, colonyEndSandboxStage
+  stages: [colonyStartSandboxStage, colonyEndSandboxStage]
+}

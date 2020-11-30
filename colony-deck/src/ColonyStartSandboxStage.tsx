@@ -5,8 +5,8 @@ import {
   IStageTypeConfig,
 } from '@spinnaker/core';
 
-import { ColonySandboxStageExecutionDetails } from './ColonySandboxStageExecutionDetails';
-import { ColonySandboxStageConfig,validate } from './ColonySandboxStageConfig';
+import { ColonyStartSandboxStageExecutionDetails } from './ColonyStartSandboxStageExecutionDetails';
+import { ColonyStartSandboxStageConfig, validate } from './ColonyStartSandboxStageConfig';
 
 
 /*
@@ -18,11 +18,11 @@ import { ColonySandboxStageConfig,validate } from './ColonySandboxStageConfig';
   - component -> The rendered React component
   - validateFn -> A validation function for the stage config form.
  */
-export const colonySandboxStage: IStageTypeConfig = {
-  key: 'colonySandbox',
-  label: `Colony Sandbox`,
-  description: 'Colony Sandbox Stage',
-  component: ColonySandboxStageConfig, // stage config
-  executionDetailsSections: [ColonySandboxStageExecutionDetails, ExecutionDetailsTasks],
+export const colonyStartSandboxStage: IStageTypeConfig = {
+  key: 'colonyStartSandbox',
+  label: `Colony Start Sandbox`,
+  description: 'Colony Start Sandbox Stage',
+  component: ColonyStartSandboxStageConfig, // stage config
+  executionDetailsSections: [ColonyStartSandboxStageExecutionDetails, ExecutionDetailsTasks],
   validateFn: validate,
 };

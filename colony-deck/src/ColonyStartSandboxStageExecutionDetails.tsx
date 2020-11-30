@@ -5,16 +5,16 @@ import {
     IExecutionDetailsSectionProps,
 } from '@spinnaker/core'
 
-export function ColonySandboxStageExecutionDetails(props: IExecutionDetailsSectionProps) {
+export function ColonyStartSandboxStageExecutionDetails(props: IExecutionDetailsSectionProps) {
   return (
     <ExecutionDetailsSection name={props.name} current={props.current}>
       <div>
-        <p>Result of stage is {props.stage.outputs.resultSandbox}</p>
+        <p>Started sandbox with id {props.stage.outputs.sandboxId}</p>
       </div>
     </ExecutionDetailsSection>
   );
 }
 
-export namespace ColonySandboxStageExecutionDetails {
-  export const title = 'colonySandbox';
+export namespace ColonyStartSandboxStageExecutionDetails {
+  export const title = 'colonyStartSandbox';
 }

@@ -1,15 +1,19 @@
 package com.quali.colony.plugins.spinnaker
 
+import com.google.gson.Gson
 import com.netflix.spinnaker.orca.api.pipeline.models.ExecutionStatus.*
 import com.netflix.spinnaker.orca.api.pipeline.Task
 import com.netflix.spinnaker.orca.api.pipeline.TaskResult
 import com.netflix.spinnaker.orca.api.pipeline.graph.StageDefinitionBuilder
 import com.netflix.spinnaker.orca.api.pipeline.graph.TaskNode
 import com.netflix.spinnaker.orca.api.pipeline.models.StageExecution
+import com.quali.colony.plugins.spinnaker.api.CreateSandboxRequest
+import com.quali.colony.plugins.spinnaker.api.SingleSandbox
 import org.pf4j.Extension
 import org.pf4j.Plugin
 import org.pf4j.PluginWrapper
 import org.slf4j.LoggerFactory
+import java.util.concurrent.TimeUnit
 
 class ColonySandboxPlugin(wrapper: PluginWrapper) : Plugin(wrapper) {
     private val logger = LoggerFactory.getLogger(ColonySandboxPlugin::class.java)
@@ -28,7 +32,7 @@ class ColonySandboxPlugin(wrapper: PluginWrapper) : Plugin(wrapper) {
  * @see com.netflix.spinnaker.orca.api.pipeline.graph.StageDefinitionBuilder
  */
 @Extension
-class ColonySandboxStage : StageDefinitionBuilder {
+class ColonyStartSandboxStage : StageDefinitionBuilder {
 
     /**
      * This function describes the sequence of substeps, or "tasks" that comprise this
@@ -39,7 +43,7 @@ class ColonySandboxStage : StageDefinitionBuilder {
      */
 
     override fun taskGraph(stage: StageExecution, builder: TaskNode.Builder) {
-        builder.withTask("colonyPlugin", ColonySandboxTask::class.java)
+        builder.withTask("colonyPlugin", ColonyStartSandboxTask::class.java)
     }
 }
 
@@ -61,44 +65,114 @@ class ColonyEndSandboxStage : StageDefinitionBuilder {
 
 
 @Extension
-class ColonySandboxTask(private val config: ColonyConfig) : Task {
+class ColonyStartSandboxTask(private val config: ColonyConfig) : Task {
 
-    data class ColonySandboxTaskContext(
-            val sandboxId: String
+    data class ColonyStartSandboxTaskContext(
+            val space: String,
+            val blueprintName: String,
+            val sandboxName: String,
+            val duration: Int,
+            val artifacts: String,
+            val inputs: String
     )
 
-    private val log = LoggerFactory.getLogger(ColonySandboxTask::class.java)
+    private val log = LoggerFactory.getLogger(ColonyStartSandboxTask::class.java)
 
+    private fun parseParamsString(paramsStr: String) : Map<String,String> {
+        val holder = HashMap<String,String>()
+
+        if  ((paramsStr.trim().length > 0 ) || (paramsStr.contains("="))) {
+            val keyValues = paramsStr.split(", ")
+            for (keyV in keyValues) {
+                val parts = keyV.split("=", limit = 2)
+                holder[parts[0]] = parts[1]
+            }
+        }
+        return holder
+    }
     /**
      * This method is called when the task is executed.
      */
     override fun execute(stage: StageExecution): TaskResult {
-        val ctx = stage.mapTo(ColonySandboxTaskContext::class.java)
-        val sandboxId = ctx.sandboxId
+        val ctx = stage.mapTo(ColonyStartSandboxTaskContext::class.java)
 
-//        make smth with sandbox id
-        val result = "start $sandboxId"
-        val token = config.colonyToken
-        val url = config.colonyUrl
+        log.info("parsing artifacts string ${ctx.artifacts}")
+        val artifacts = parseParamsString(ctx.artifacts)
 
-        log.info("Colony URL is $url")
-        log.info("Colony Token is $token")
+        log.info("parsing inputs string ${ctx.inputs}")
+        val inputs = parseParamsString(ctx.inputs)
 
-        log.info("Task ColonySandboxTask started")
-        log.info("SandBox Id is: $sandboxId")
-        return TaskResult.builder(SUCCEEDED)
-                .context(mutableMapOf("SandboxID" to sandboxId))
-                .outputs(mutableMapOf("resultSandbox" to result))
-                .build()
+        val duration = "PT${ctx.duration}H"
+
+        val startReq = CreateSandboxRequest(
+                ctx.blueprintName,
+                ctx.sandboxName,
+                artifacts,
+                true,
+                inputs,
+                duration)
+
+        val api = ColonyAuth(config).getAPI()
+        try {
+            val res = api.createSandbox(ctx.space, startReq)
+            return if (res.isSuccessful) {
+                val sandboxId = res.data?.id
+                log.info("Sandbox $sandboxId has been launched")
+                TaskResult.builder(SUCCEEDED)
+                        .context(stage.context)
+                        .outputs(mutableMapOf("sandboxId" to sandboxId))
+                        .build()
+            } else {
+                TaskResult.builder(TERMINAL)
+                        .context(stage.context)
+                        .build()
+            }
+        }
+        catch (e: Exception) {
+            log.error("Unable to start sandbox ${ctx.sandboxName}. Reason ${e.message}")
+            throw e
+        }
     }
 }
+
+
+//@Extension
+//class ColonyVerifySandboxIsReadyTask(private val config: ColonyConfig) : Task {
+//    private val log = LoggerFactory.getLogger(ColonyVerifySandboxIsReadyTask::class.java)
+//
+//    data class ColonyVerifySandboxIsReadyTaskContext(
+//            val sandboxId: String,
+//            val space: String
+//    )
+//
+//    override fun execute(stage: StageExecution): TaskResult {
+//        val ctx = stage.mapTo(
+//                ColonyVerifySandboxIsReadyTask.ColonyVerifySandboxIsReadyTaskContext::class.java
+//        )
+//
+//        val api = ColonyAuth(config).getAPI()
+//        //TODO(ddovbii) timeout should not be hard-coded
+//        val timeoutMinutes = 20
+//
+//        var sandboxData = null
+//        val startTime = System.currentTimeMillis()
+//        while ((System.currentTimeMillis() - startTime) < timeoutMinutes*1000*60) {
+//            val sandbox = api.getSandboxById(ctx.space, ctx.sandboxId)
+//
+//            sandboxData = Gson().fromJson(sandbox.rawBodyJson, SingleSandbox::class.java)
+//        }
+//
+//
+//    }
+//}
 
 
 @Extension
 class ColonyEndSandboxTask(private val config: ColonyConfig) : Task {
 
-    data class ColonySandboxTaskContext(
-            val sandboxId: String
+    data class ColonyEndSandboxTaskContext(
+            val sandboxId: String,
+            val space: String
     )
 
     private val log = LoggerFactory.getLogger(ColonyEndSandboxTask::class.java)
@@ -107,23 +181,23 @@ class ColonyEndSandboxTask(private val config: ColonyConfig) : Task {
      * This method is called when the task is executed.
      */
     override fun execute(stage: StageExecution): TaskResult {
+        val ctx = stage.mapTo(ColonyEndSandboxTaskContext::class.java)
         log.info("Task ColonyEndSandboxTask started")
-//        val ctx = stage.mapTo(ColonySandboxTaskContext::class.java)
-        val ctx = stage.context
-        val sandboxValue = ctx["resultSandbox"]
-        log.info("taken sandbox: $sandboxValue")
-//        make smth with sandbox id
-        val result = "end $sandboxValue"
-        val token = config.colonyToken
-        val url = config.colonyUrl
+        val api = ColonyAuth(config).getAPI()
 
-        log.info("Colony URL is $url")
-        log.info("Colony Token is $token")
+        log.info("Stopping sandbox: ${ctx.sandboxId}")
+        val res = api.deleteSandbox(ctx.space, ctx.sandboxId)
 
-
-        return TaskResult.builder(SUCCEEDED)
-                .context(stage.context)
-                .outputs(mutableMapOf("finalSandbox" to result))
-                .build()
+        return if (res.isSuccessful) {
+            log.info("Sandbox ${ctx.sandboxId} has been stopped")
+            TaskResult.builder(SUCCEEDED)
+                    .context(stage.context)
+                    .outputs(stage.outputs)
+                    .build()
+        } else {
+            TaskResult.builder(TERMINAL)
+                    .context(stage.context)
+                    .build()
+        }
     }
 }
