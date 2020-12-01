@@ -66,8 +66,9 @@ export function ColonyStartSandboxStageConfig(props: IStageConfigProps) {
               <FormikFormField
                   name="duration"
                   label="Duration"
-                  input={(props) => <NumberInput {...props} />}
+                  input={(props) => <NumberInput placeholder="1" {...props} />}
                   help={<HelpField id="quali.colonyStartSandboxStage.duration"/>}
+                  required={false}
               />
 
       </>

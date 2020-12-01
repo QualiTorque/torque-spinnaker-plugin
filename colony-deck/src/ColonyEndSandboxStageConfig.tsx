@@ -27,12 +27,20 @@ export function ColonyEndSandboxStageConfig(props: IStageConfigProps) {
         validate={validate}
         onChange={props.updateStage}
         render={(props) => (
+          <>
+           <FormikFormField
+            name="space"
+            label="Colony Sandbox ID"
+            input={(props) => <TextInput {...props} />}
+            help={<HelpField id="quali.colonyStartSandboxStage.space"/>}
+           />
           <FormikFormField
             name="sandboxId"
             label="Colony Sandbox ID"
             input={(props) => <TextInput {...props} />}
-            help={<HelpField id="quali.colonySandboxStage.sandboxId"/>}
+            help={<HelpField id="quali.colonyStartSandboxStage.sandboxId"/>}
           />
+          </>
         )}
       />
     </div>
