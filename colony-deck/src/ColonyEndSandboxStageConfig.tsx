@@ -30,7 +30,7 @@ export function ColonyEndSandboxStageConfig(props: IStageConfigProps) {
           <>
            <FormikFormField
             name="space"
-            label="Colony Sandbox ID"
+            label="Colony Space"
             input={(props) => <TextInput {...props} />}
             help={<HelpField id="quali.colonyStartSandboxStage.space"/>}
            />

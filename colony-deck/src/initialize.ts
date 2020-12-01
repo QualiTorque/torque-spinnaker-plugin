@@ -9,4 +9,5 @@ export const initialize = () => {
   HelpContentsRegistry.register('quali.colonyStartSandboxStage.inputs',
     'Comma separated list of key-values. Example: key1=value1, key2=value2');
   HelpContentsRegistry.register('quali.colonyStartSandboxStage.duration', 'Provide humber of hours you want to reserve');
+  HelpContentsRegistry.register('quali.colonyStartSandboxStage.timeout', 'Set the timeout for the sandbox to become active');
 };

@@ -71,9 +71,9 @@ class ColonyStartSandboxTask(private val config: ColonyConfig) : Task {
             val space: String,
             val blueprintName: String,
             val sandboxName: String,
-            val duration: Int,
-            val artifacts: String,
-            val inputs: String
+            val duration: Int = 1,
+            val artifacts: String = "",
+            val inputs: String = ""
     )
 
     private val log = LoggerFactory.getLogger(ColonyStartSandboxTask::class.java)
@@ -142,7 +142,8 @@ class ColonyStartSandboxTask(private val config: ColonyConfig) : Task {
 //
 //    data class ColonyVerifySandboxIsReadyTaskContext(
 //            val sandboxId: String,
-//            val space: String
+//            val space: String,
+//            val timeoutMinutes: Int = 20
 //    )
 //
 //    override fun execute(stage: StageExecution): TaskResult {
