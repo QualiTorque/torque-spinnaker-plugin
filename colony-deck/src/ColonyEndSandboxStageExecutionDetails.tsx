@@ -9,7 +9,7 @@ export function ColonyEndSandboxStageExecutionDetails(props: IExecutionDetailsSe
   return (
     <ExecutionDetailsSection name={props.name} current={props.current}>
       <div>
-        <p>Result of stage is {props.stage.outputs.finalSandbox}</p>
+        <p>Sandbox has been stopped</p>
       </div>
     </ExecutionDetailsSection>
   );
