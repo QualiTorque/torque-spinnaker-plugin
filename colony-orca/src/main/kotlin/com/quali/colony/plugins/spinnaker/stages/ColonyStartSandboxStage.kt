@@ -12,8 +12,8 @@ import org.pf4j.Extension
 class ColonyStartSandboxStage : StageDefinitionBuilder {
 
     override fun taskGraph(stage: StageExecution, builder: TaskNode.Builder) {
-        builder.withTask("colonyStartSandbox", ColonyStartSandboxTask::class.java)
-        builder.withTask("colonyVerifySandboxActive", ColonyVerifySandboxIsReadyTask::class.java)
+        builder.withTask("startSandbox", ColonyStartSandboxTask::class.java)
+        builder.withTask("verifyAndWaitSandboxActive", ColonyVerifySandboxIsReadyTask::class.java)
     }
 }
 

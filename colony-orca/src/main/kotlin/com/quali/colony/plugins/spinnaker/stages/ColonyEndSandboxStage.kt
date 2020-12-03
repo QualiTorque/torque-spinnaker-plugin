@@ -9,6 +9,6 @@ import org.pf4j.Extension
 @Extension
 class ColonyEndSandboxStage : StageDefinitionBuilder {
     override fun taskGraph(stage: StageExecution, builder: TaskNode.Builder) {
-        builder.withTask("colonyEndSandbox", ColonyEndSandboxTask::class.java)
+        builder.withTask("endSandbox", ColonyEndSandboxTask::class.java)
     }
 }
