@@ -61,9 +61,11 @@ class ColonyVerifySandboxIsReadyTask(private val config: ColonyConfig) : ColonyB
         val sandboxId = stage.context["sandboxId"] as String
         val space = stage.context["space"] as String
         var timeoutMinutes = 20
-        if ("timeoutMinutes" in stage.context.keys) {
+        if ("timeoutMinutes" in stage.context.keys)
             timeoutMinutes = stage.context["timeoutMinutes"] as Int
-        }
+
+        else
+            addToObjectToStageContext(stage,"timeoutMinutes", timeoutMinutes)
 
         var prevStatus = ""
         val api = ColonyAuth(config).getAPI()
@@ -90,6 +92,10 @@ class ColonyVerifySandboxIsReadyTask(private val config: ColonyConfig) : ColonyB
             log.info("**** Current status is: $prevStatus")
             Thread.sleep(10000);
         }
-        throw RuntimeException("Sandbox is not active after $timeoutMinutes minutes")
+        addErrorMessage(stage, "Sandbox is not active after $timeoutMinutes minutes")
+        return TaskResult.builder(ExecutionStatus.TERMINAL)
+                .context(stage.context)
+                .outputs(stage.outputs)
+                .build()
     }
 }
