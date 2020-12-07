@@ -6,7 +6,6 @@ import com.netflix.spinnaker.orca.api.pipeline.models.StageExecution
 import com.quali.colony.plugins.spinnaker.ColonyAuth
 import com.quali.colony.plugins.spinnaker.ColonyBaseTask
 import com.quali.colony.plugins.spinnaker.ColonyConfig
-import com.quali.colony.plugins.spinnaker.ColonyStartSandboxStageContext
 import com.quali.colony.plugins.spinnaker.api.CreateSandboxRequest
 import org.pf4j.Extension
 import org.slf4j.LoggerFactory
@@ -14,6 +13,16 @@ import java.util.HashMap
 
 @Extension
 class ColonyStartSandboxTask(private val config: ColonyConfig) : ColonyBaseTask {
+    data class ColonyStartSandboxStageContext(
+            val space: String,
+            val blueprintName: String,
+            val sandboxName: String,
+            val duration: Int = 1,
+            val timeoutMinutes: Int = 20,
+            val artifacts: String = "",
+            val inputs: String = ""
+    )
+
     private val log = LoggerFactory.getLogger(ColonyStartSandboxTask::class.java)
 
     private fun parseParamsString(paramsStr: String) : Map<String,String> {
@@ -59,6 +68,7 @@ class ColonyStartSandboxTask(private val config: ColonyConfig) : ColonyBaseTask 
                         .outputs(mutableMapOf("sandboxId" to sandboxId))
                         .build()
             } else {
+                addErrorMessage(stage, res.error)
                 TaskResult.builder(ExecutionStatus.TERMINAL)
                         .context(stage.context)
                         .build()

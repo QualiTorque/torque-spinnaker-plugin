@@ -34,6 +34,7 @@ class ColonyEndSandboxTask(private val config: ColonyConfig) : ColonyBaseTask {
                     .outputs(stage.outputs)
                     .build()
         } else {
+            addErrorMessage(stage, res.error)
             TaskResult.builder(ExecutionStatus.TERMINAL)
                     .context(stage.context)
                     .build()

@@ -17,13 +17,3 @@ class ColonyStartSandboxStage : StageDefinitionBuilder {
     }
 }
 
-data class ColonyStartSandboxStageContext(
-        val space: String,
-        val blueprintName: String,
-        val sandboxName: String,
-        val duration: Int = 1,
-        val timeoutMinutes: Int = 20,
-        val artifacts: String = "",
-        val inputs: String = ""
-)
-
