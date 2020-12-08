@@ -1,6 +1,6 @@
 package com.quali.colony.plugins.spinnaker
 
-import com.netflix.spinnaker.kork.plugins.api.ExtensionConfiguration
+import com.netflix.spinnaker.kork.plugins.api.PluginConfiguration
 
 
 /**
@@ -8,7 +8,9 @@ import com.netflix.spinnaker.kork.plugins.api.ExtensionConfiguration
  * The data can be key/value pairs or an entire configuration tree.
  *
  */
-@ExtensionConfiguration("quali.colonySandboxStage")
+
+@PluginConfiguration("quali.colonySandboxStage")
+
 data class ColonyConfig(
         var colonyToken: String,
         var colonyUrl: String = "https://cloudshellcolony.com"
