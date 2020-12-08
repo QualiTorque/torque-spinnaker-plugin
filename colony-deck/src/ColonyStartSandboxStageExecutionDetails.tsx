@@ -13,7 +13,7 @@ export function ColonyStartSandboxStageExecutionDetails(props: IExecutionDetails
     for(let app of apps) {
         const href=[]
         for(let link of app.shortcuts){
-        href.push(<li><a href="{link}">{link}</a></li>)
+          href.push(<li><a href={link}>{link}</a></li>)
         }
         items.push(<p><b>{app.name}: </b>{href}</p>)
     }
