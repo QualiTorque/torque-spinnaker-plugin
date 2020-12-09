@@ -79,10 +79,10 @@ class ColonyVerifySandboxIsReadyTask(private val config: ColonyConfig) : ColonyB
             if (!sandboxData.sandboxStatus.equals(prevStatus)) {
                 prevStatus = sandboxData.sandboxStatus.toString()
             }
-            val isActive = false
+            var isActive = false
 
             try {
-                val isActive = isSandboxActive(sandboxData)
+                isActive = isSandboxActive(sandboxData)
             }
             catch (e: Throwable) {
                 addExceptionToOutput(stage, e)
@@ -103,6 +103,7 @@ class ColonyVerifySandboxIsReadyTask(private val config: ColonyConfig) : ColonyB
             }
             log.info("**** Waiting for sandbox $sandboxId become active ****")
             log.info("**** Current status is: $prevStatus")
+            log.info("**** Time spent: ${System.currentTimeMillis() - startTime} / 1000")
             Thread.sleep(10000);
         }
         addErrorMessage(stage, "Sandbox is not active after $timeoutMinutes minutes")
