@@ -6,7 +6,7 @@ import {
 } from '@spinnaker/core';
 
 import { ColonyEndSandboxStageExecutionDetails } from './ColonyEndSandboxStageExecutionDetails';
-import { ColonyEndSandboxStageConfig,validate } from './ColonyEndSandboxStageConfig';
+import { ColonyEndSandboxStageConfig } from './ColonyEndSandboxStageConfig';
 
 
 /*
@@ -24,5 +24,4 @@ export const colonyEndSandboxStage: IStageTypeConfig = {
   description: 'End colony sandbox',
   component: ColonyEndSandboxStageConfig, // stage config
   executionDetailsSections: [ColonyEndSandboxStageExecutionDetails, ExecutionDetailsTasks],
-  validateFn: validate,
 };

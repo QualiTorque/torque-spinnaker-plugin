@@ -24,7 +24,6 @@ export function ColonyEndSandboxStageConfig(props: IStageConfigProps) {
     <div className="ColonyEndSandboxStageConfig">
       <FormikStageConfig
         {...props}
-        validate={validate}
         onChange={props.updateStage}
         render={(props) => (
           <>
@@ -32,28 +31,17 @@ export function ColonyEndSandboxStageConfig(props: IStageConfigProps) {
             name="space"
             label="Colony Space"
             input={(props) => <TextInput {...props} />}
-            help={<HelpField id="quali.colonyStartSandboxStage.space"/>}
+            help={<HelpField id="quali.colonyEndSandboxStage.space"/>}
            />
           <FormikFormField
             name="sandboxId"
             label="Colony Sandbox ID"
             input={(props) => <TextInput {...props} />}
-            help={<HelpField id="quali.colonyStartSandboxStage.sandboxId"/>}
+            help={<HelpField id="quali.colonyEndSandboxStage.sandboxId"/>}
           />
           </>
         )}
       />
     </div>
   );
-}
-
-export function validate(stageConfig: IStage) {
-  const validator = new FormValidator(stageConfig);
-
-  validator
-    .field('sandboxId')
-    .required()
-    .withValidators((value, label) => (value < 0 ? `${label} must be non-negative` : undefined));
-
-  return validator.validateForm();
 }
