@@ -79,7 +79,20 @@ class ColonyVerifySandboxIsReadyTask(private val config: ColonyConfig) : ColonyB
             if (!sandboxData.sandboxStatus.equals(prevStatus)) {
                 prevStatus = sandboxData.sandboxStatus.toString()
             }
-            if (isSandboxActive(sandboxData)) {
+            val isActive = false
+
+            try {
+                val isActive = isSandboxActive(sandboxData)
+            }
+            catch (e: Throwable) {
+                addExceptionToOutput(stage, e)
+                return TaskResult.builder(ExecutionStatus.TERMINAL)
+                    .context(stage.context)
+                    .outputs(stage.outputs)
+                    .build()
+            }
+            
+            if (isActive) {
                 log.info("Sandbox is active. Finishing task")
                 stage.outputs["SandboxDetails"] = sandboxData
                 stage.outputs["QuickLinks"] = sandboxData.applications
