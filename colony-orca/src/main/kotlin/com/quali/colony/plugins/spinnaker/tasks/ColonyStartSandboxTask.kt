@@ -61,7 +61,15 @@ class ColonyStartSandboxTask(private val config: ColonyConfig) : ColonyBaseTask 
         try {
             val res = api.createSandbox(ctx.space, startReq)
             return if (res.isSuccessful) {
+
                 val sandboxId = res.data?.id
+                // TODO: Remove hardcode
+                if (config.account != "") {
+                    addToOutput(
+                        stage,
+                        "sandboxUrl",
+                        "https://${config.account}.cloudshellcolony.com/${ctx.space}/sandboxes/$sandboxId")
+                }
                 log.info("Sandbox $sandboxId has been launched")
                 TaskResult.builder(ExecutionStatus.SUCCEEDED)
                         .context(stage.context)

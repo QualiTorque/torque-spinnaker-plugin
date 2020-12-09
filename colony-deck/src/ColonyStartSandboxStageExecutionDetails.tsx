@@ -8,7 +8,10 @@ import {
 
 export function ColonyStartSandboxStageExecutionDetails(props: IExecutionDetailsSectionProps) {
   var apps = props.stage.outputs.QuickLinks;
+  var sburl = props.stage.outputs.sandboxUrl;
+
   const items=[];
+
   if(apps){
     for(let app of apps) {
         const href=[]
@@ -23,7 +26,8 @@ export function ColonyStartSandboxStageExecutionDetails(props: IExecutionDetails
     <ExecutionDetailsSection name={props.name} current={props.current}>
       <StageFailureMessage stage={props.stage} message={props.stage.outputs.failureMessage} />
       <div>
-        <p>Started sandbox with id: <b> {props.stage.outputs.sandboxId} </b></p>
+
+        <p>Started sandbox with id: <b> <a href={sburl}> {props.stage.outputs.sandboxId} </a></b></p>
         <div>
             {items}
         </div>

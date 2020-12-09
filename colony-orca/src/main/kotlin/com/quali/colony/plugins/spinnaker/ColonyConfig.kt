@@ -13,5 +13,6 @@ import com.netflix.spinnaker.kork.plugins.api.PluginConfiguration
 
 data class ColonyConfig(
         var colonyToken: String,
-        var colonyUrl: String = "https://cloudshellcolony.com"
+        var colonyUrl: String = "https://cloudshellcolony.com",
+        var account: String = ""
 )
