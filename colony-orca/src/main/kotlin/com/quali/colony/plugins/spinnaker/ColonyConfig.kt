@@ -9,7 +9,7 @@ import com.netflix.spinnaker.kork.plugins.api.PluginConfiguration
  *
  */
 
-@PluginConfiguration("quali.colonySandboxStage")
+@PluginConfiguration
 
 data class ColonyConfig(
         var colonyToken: String,

@@ -9,7 +9,7 @@
 
 This plugin provides support for CloudShell Colony via Pipelines in Spinnaker 1.23.0 and above
 
-For Spinnaker 1.22.x and below please use this branch 
+For Spinnaker 1.22.x and below please use this [branch](https://github.com/QualiSystemsLab/colony-spinnaker-plugin/tree/1.22.x) 
 
 ### Version Compatibility
 | Plugin  | Spinnaker Platform |
