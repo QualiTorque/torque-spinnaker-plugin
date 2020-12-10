@@ -30,9 +30,9 @@ For Spinnaker 1.22.x and below please use this branch
           enabled: true
           version: <<VERSION NUMBER>>
           config:
-              colonyToken: <<API Token Required>>
-              colonyUrl:  <<Not required>>
-              account: <<Colony sub domain Not required EX colony-demo>>
+              colonyToken: <<API Token (Required) >>
+              colonyUrl:  <<API URL (Not required) Default= https://cloudshellcolony.com >>
+              account: <<Colony Sub Domain (Not required) EX= colony-demo >>
       repositories:
         ColonyRepo:
           id: S3Repo
@@ -53,7 +53,7 @@ spinnaker:
         url: <<Plugin.json location>>
 ```
 3. Execute `hal deploy apply` to deploy the changes.
-4. You should now be able to see 2 new stages provided by this plugin in the Deck UI when adding a new stage to your pipeline.
+4. You should now be able to see 2 new stages provided by this plugin (Colony Start and End Sandbox) in the Deck UI when adding a new stage to your pipeline.
 
 ### Plugin User Guide
 
