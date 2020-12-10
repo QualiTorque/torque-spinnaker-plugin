@@ -9,7 +9,7 @@ export const initialize = () => {
   HelpContentsRegistry.register('quali.colonyStartSandboxStage.inputs',
     'Comma separated list of key-values. Example: key1=value1, key2=value2');
   HelpContentsRegistry.register('quali.colonyStartSandboxStage.duration', ' Provide Sandbox duration in hours.');
-  HelpContentsRegistry.register('quali.colonyStartSandboxStage.timeout', 'Set the timeout for the sandbox to become active');
+  HelpContentsRegistry.register('quali.colonyStartSandboxStage.timeout', 'Set the timeout in minutes for the sandbox to become active');
   HelpContentsRegistry.register('quali.colonyEndSandboxStage.sandboxId', 'Specify sandbox ID.');
   HelpContentsRegistry.register('quali.colonyEndSandboxStage.space', 'Desired Colony space (please use one from start)');
 };

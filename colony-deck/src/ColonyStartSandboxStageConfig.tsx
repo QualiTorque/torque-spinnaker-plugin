@@ -65,13 +65,13 @@ export function ColonyStartSandboxStageConfig(props: IStageConfigProps) {
 
           <FormikFormField
                   name="timeoutMinutes"
-                  label="Timeout"
+                  label="Timeout (minutes)"
                   input={(props) => <NumberInput placeholder="20" value = '20' {...props} />}
                   help={<HelpField id="quali.colonyStartSandboxStage.timeout"/>}
           />
               <FormikFormField
                   name="duration"
-                  label="Duration"
+                  label="Duration (hours)"
                   input={(props) => <NumberInput placeholder="1" {...props} />}
                   help={<HelpField id="quali.colonyStartSandboxStage.duration"/>}
               />

@@ -110,7 +110,6 @@ class ColonyVerifySandboxIsReadyTask(private val config: ColonyConfig) : ColonyB
             }
             log.info("**** Waiting for sandbox $sandboxId become active ****")
             log.info("**** Current status is: $prevStatus")
-            log.info("**** Time spent: ${System.currentTimeMillis() - startTime} / 1000")
             Thread.sleep(10000);
         }
         addErrorMessage(stage, "Sandbox is not active after $timeoutMinutes minutes")
