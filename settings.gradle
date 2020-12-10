@@ -6,7 +6,7 @@ pluginManagement {
   }
 }
 
-rootProject.name = "colonySandboxPlugin"
+rootProject.name = "colony-spinnaker-plugin"
 
 //include "random-wait-orca", "random-wait-orca-test", "random-wait-deck", "colony-orca"
 include "colony-orca", "colony-deck"
