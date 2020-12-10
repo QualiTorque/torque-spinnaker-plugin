@@ -7,18 +7,18 @@
 
 ## CloudShell Colony Plugin for Spinnaker
 
-This plugin provides support for CloudShell Colony via Pipelines in Spinnaker 1.23.0 and above
+This plugin provides support for CloudShell Colony via Pipelines in Spinnaker 1.22.x and below
 
-For Spinnaker 1.22.x and below please use this branch 
+For Spinnaker 1.23.0 and above please use this [branch](https://github.com/QualiSystemsLab/colony-spinnaker-plugin) 
 
 ### Version Compatibility
 | Plugin  | Spinnaker Platform |
 |:----------- | :--------- |
-| Master Branch |  1.23.x |
+| 1.22.x Branch |  1.22.x |
 
 
 
-## Plugin Deployment Guide for Spinnaker <=1.23.x 
+## Plugin Deployment Guide for Spinnaker >=1.22.x 
 
 1. Add the following to the Halyard config (typically found at `~/.hal/config`) to load the Orca backend
 ```yaml
@@ -29,10 +29,13 @@ For Spinnaker 1.22.x and below please use this branch
           id: Quali.ColonySandboxPlugin
           enabled: true
           version: <<VERSION NUMBER>>
-          config:
-              colonyToken: <<API Token (Required) >>
-              colonyUrl:  <<API URL (Not required) Default= https://cloudshellcolony.com >>
-              account: <<Colony Sub Domain (Not required) EX= colony-demo >>
+          extensions:
+            quali.colonySandboxStage:
+              enabled: true
+              config:
+                colonyToken: <<API Token (Required) >>
+                colonyUrl:  <<API URL (Not required) Default= https://cloudshellcolony.com >>
+                account: <<Colony Sub Domain (Not required) EX= colony-demo >>
       repositories:
         ColonyRepo:
           id: S3Repo
