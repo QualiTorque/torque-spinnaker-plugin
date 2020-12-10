@@ -27,13 +27,20 @@ class ColonyVerifySandboxIsReadyTask(private val config: ColonyConfig) : ColonyB
     private fun isSandboxActive(sandbox: SingleSandbox): Boolean {
         if (sandbox.sandboxStatus.equals(SandboxStatus.LAUNCHING))
             return false
+
         if (sandbox.sandboxStatus.equals(SandboxStatus.ACTIVE))
             return true
+
         if (sandbox.sandboxStatus.equals(SandboxStatus.ACTIVE_WITH_ERROR)) {
             val appStatusesString = formatAppsDeploymentStatuses(sandbox)
             throw Throwable("Sandbox deployment failed with " +
                     "status ${sandbox.sandboxStatus}, apps deployment statuses are: $appStatusesString")
         }
+
+        if (sandbox.sandboxStatus.equals(SandboxStatus.ENDED) || 
+            sandbox.sandboxStatus.equals(SandboxStatus.ENDING) ||
+            sandbox.sandboxStatus.equals(SandboxStatus.ENDED_WITH_ERROR))
+            throw Throwable("Sandbox with id ${sandbox.id} has been ended")
 
         throw Throwable("Sandbox with id ${sandbox.id} has unknown sandbox status ${sandbox.sandboxStatus}")
     }
