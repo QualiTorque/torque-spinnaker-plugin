@@ -71,11 +71,10 @@ export function ColonyStartSandboxStageConfig(props: IStageConfigProps) {
           />
               <FormikFormField
                   name="duration"
-                  label="Duration (hours)"
-                  input={(props) => <NumberInput placeholder="1" {...props} />}
+                  label="Duration (minutes)"
+                  input={(props) => <NumberInput placeholder="30" {...props} />}
                   help={<HelpField id="quali.colonyStartSandboxStage.duration"/>}
               />
-
       </>
           )}
       />
@@ -89,12 +88,12 @@ export function validate(stageConfig: IStage) {
   validator
     .field('duration')
     .required()
-    .withValidators((value, label) => (value < 0 ? `${label} must be non-negative` : undefined));
+    .withValidators((value, label) => (value <= 0 ? `${label} must be positive` : undefined));
   
   validator
     .field('timeoutMinutes')
     .required()
-    .withValidators((value, label) => (value < 0 ? `${label} must be non-negative` : undefined));
+    .withValidators((value, label) => (value <= 0 ? `${label} must be positive` : undefined));
 
   return validator.validateForm();
 }
