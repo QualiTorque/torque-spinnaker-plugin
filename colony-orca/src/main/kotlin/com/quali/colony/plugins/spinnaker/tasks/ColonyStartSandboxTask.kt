@@ -10,6 +10,8 @@ import com.quali.colony.plugins.spinnaker.api.CreateSandboxRequest
 import org.pf4j.Extension
 import org.slf4j.LoggerFactory
 import java.util.HashMap
+import java.net.URL
+
 
 @Extension
 class ColonyStartSandboxTask(private val config: ColonyConfig) : ColonyBaseTask {
@@ -47,8 +49,8 @@ class ColonyStartSandboxTask(private val config: ColonyConfig) : ColonyBaseTask 
         log.info("parsing inputs string ${ctx.inputs}")
         val inputs = parseParamsString(ctx.inputs)
 
-        val duration = "PT${ctx.duration}H"
-
+        val duration = "PT${ctx.duration}M"
+//        val duration = ctx.duration.minutes.toIsoString()
         val startReq = CreateSandboxRequest(
                 ctx.blueprintName,
                 ctx.sandboxName,
@@ -65,10 +67,11 @@ class ColonyStartSandboxTask(private val config: ColonyConfig) : ColonyBaseTask 
                 val sandboxId = res.data?.id
                 // TODO: Remove hardcode
                 if (config.account != "") {
+                    val url = URL(config.colonyUrl)
                     addToOutput(
                         stage,
                         "sandboxUrl",
-                        "https://${config.account}.cloudshellcolony.com/${ctx.space}/sandboxes/$sandboxId")
+                        "${url.protocol}://${config.account}.${url.authority}/${ctx.space}/sandboxes/$sandboxId")
                 }
                 log.info("Sandbox $sandboxId has been launched")
                 TaskResult.builder(ExecutionStatus.SUCCEEDED)
