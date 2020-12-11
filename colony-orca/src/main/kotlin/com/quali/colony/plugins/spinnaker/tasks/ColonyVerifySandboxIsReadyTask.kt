@@ -1,7 +1,7 @@
 package com.quali.colony.plugins.spinnaker.tasks
 
 import com.google.gson.Gson
-import com.netflix.spinnaker.orca.api.pipeline.Task
+import com.netflix.spinnaker.orca.api.pipeline.RetryableTask
 import com.netflix.spinnaker.orca.api.pipeline.TaskResult
 import com.netflix.spinnaker.orca.api.pipeline.models.ExecutionStatus
 import com.netflix.spinnaker.orca.api.pipeline.models.StageExecution
@@ -12,17 +12,13 @@ import com.quali.colony.plugins.spinnaker.api.SandboxStatus
 import com.quali.colony.plugins.spinnaker.api.SingleSandbox
 import org.pf4j.Extension
 import org.slf4j.LoggerFactory
-import java.lang.RuntimeException
+import java.util.concurrent.TimeUnit
 
 @Extension
-class ColonyVerifySandboxIsReadyTask(private val config: ColonyConfig) : ColonyBaseTask {
+class ColonyVerifySandboxIsReadyTask(private val config: ColonyConfig) : ColonyBaseTask, RetryableTask {
     private val log = LoggerFactory.getLogger(ColonyVerifySandboxIsReadyTask::class.java)
-
-    data class ColonyVerifySandboxIsReadyTaskContext(
-            val sandboxId: String,
-            val space: String,
-            val timeoutMinutes: Int = 20
-    )
+    private var taskTimeout = TimeUnit.HOURS.toMillis(2)
+    private val endSandboxTask = ColonyEndSandboxTask(config)
 
     private fun isSandboxActive(sandbox: SingleSandbox): Boolean {
         if (sandbox.sandboxStatus.equals(SandboxStatus.LAUNCHING))
@@ -45,7 +41,7 @@ class ColonyVerifySandboxIsReadyTask(private val config: ColonyConfig) : ColonyB
         throw Throwable("Sandbox with id ${sandbox.id} has unknown sandbox status ${sandbox.sandboxStatus}")
     }
 
-    private fun formatAppsDeploymentStatuses(sandbox: SingleSandbox): String? {
+    private fun formatAppsDeploymentStatuses(sandbox: SingleSandbox): String {
         val builder = StringBuilder()
         var isFirst = true
         for (service in sandbox.applications!!) {
@@ -64,58 +60,67 @@ class ColonyVerifySandboxIsReadyTask(private val config: ColonyConfig) : ColonyB
     }
 
     override fun execute(stage: StageExecution): TaskResult {
-        log.info("VerifySandboxIsActive task started")
+        log.info("VerifySandboxIsActive task is running")
+
         val sandboxId = stage.context["sandboxId"] as String
         val space = stage.context["space"] as String
-        var timeoutMinutes = 20
-        if ("timeoutMinutes" in stage.context.keys)
-            timeoutMinutes = stage.context["timeoutMinutes"] as Int
+        val timeoutMinutes = stage.context["timeoutMinutes"] as Int
 
-        else
-            addToObjectToStageContext(stage,"timeoutMinutes", timeoutMinutes)
+        // Rewrite task timeout with user input
+        taskTimeout = TimeUnit.MINUTES.toMillis(timeoutMinutes.toLong())
 
-        var prevStatus = ""
         val api = ColonyAuth(config).getAPI()
 
-        val startTime = System.currentTimeMillis()
-        while ((System.currentTimeMillis() - startTime) < timeoutMinutes*1000*60) {
-            log.info("Getting sandbox")
-            val sandbox = api.getSandboxById(space, sandboxId)
-            val sandboxData = Gson().fromJson(sandbox.rawBodyJson, SingleSandbox::class.java)
+        log.info("Getting sandbox")
+        val sandbox = api.getSandboxById(space, sandboxId)
+        val sandboxData = Gson().fromJson(sandbox.rawBodyJson, SingleSandbox::class.java)
 
-            if (!sandboxData.sandboxStatus.equals(prevStatus)) {
-                prevStatus = sandboxData.sandboxStatus.toString()
-            }
-            var isActive = false
+        val isActive: Boolean
 
-            try {
-                isActive = isSandboxActive(sandboxData)
-            }
-            catch (e: Throwable) {
-                addExceptionToOutput(stage, e)
-                return TaskResult.builder(ExecutionStatus.TERMINAL)
+        try {
+            isActive = isSandboxActive(sandboxData)
+        }
+        catch (e: Throwable) {
+            addExceptionToOutput(stage, e)
+            return TaskResult.builder(ExecutionStatus.TERMINAL)
+                .context(stage.context)
+                .outputs(stage.outputs)
+                .build()
+        }
+
+        return if (isActive) {
+            log.info("Sandbox is active. Finishing task")
+            stage.outputs["SandboxDetails"] = sandboxData
+            stage.outputs["QuickLinks"] = sandboxData.applications
+            TaskResult.builder(ExecutionStatus.SUCCEEDED)
                     .context(stage.context)
                     .outputs(stage.outputs)
                     .build()
-            }
-            
-            if (isActive) {
-                log.info("Sandbox is active. Finishing task")
-                stage.outputs["SandboxDetails"] = sandboxData
-                stage.outputs["QuickLinks"] = sandboxData.applications
-                return TaskResult.builder(ExecutionStatus.SUCCEEDED)
-                        .context(stage.context)
-                        .outputs(stage.outputs)
-                        .build()
-            }
-            log.info("**** Waiting for sandbox $sandboxId become active ****")
-            log.info("**** Current status is: $prevStatus")
-            Thread.sleep(10000);
         }
-        addErrorMessage(stage, "Sandbox is not active after $timeoutMinutes minutes")
+        else {
+            TaskResult.builder(ExecutionStatus.RUNNING).build()
+        }
+    }
+
+    override fun onCancel(stage: StageExecution) {
+        addObjectToStageContext(stage, "sandboxId", stage.context["sandboxId"])
+        this.endSandboxTask.execute(stage)
+    }
+
+    override fun onTimeout(stage: StageExecution): TaskResult {
+        addErrorMessage(stage, "Sandbox is not active after ${stage.context["timeoutMinutes"]} minutes.")
+        //TODO: maybe we need to stop sandbox as well
         return TaskResult.builder(ExecutionStatus.TERMINAL)
                 .context(stage.context)
                 .outputs(stage.outputs)
                 .build()
+    }
+
+    override fun getBackoffPeriod(): Long {
+        return TimeUnit.SECONDS.toMillis(15)
+    }
+
+    override fun getTimeout(): Long {
+        return taskTimeout
     }
 }
