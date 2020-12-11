@@ -5,7 +5,7 @@ import com.netflix.spinnaker.orca.api.pipeline.models.StageExecution
 
 
 interface ColonyBaseTask : Task{
-    fun addToObjectToStageContext(stage: StageExecution, key: String?, value: Any?) {
+    fun addObjectToStageContext(stage: StageExecution, key: String?, value: Any?) {
         stage.context[key] = value
     }
 
