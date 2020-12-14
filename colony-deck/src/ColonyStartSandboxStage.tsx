@@ -21,7 +21,7 @@ import { ColonyStartSandboxStageConfig, validate } from './ColonyStartSandboxSta
 export const colonyStartSandboxStage: IStageTypeConfig = {
   key: 'colonyStartSandbox',
   label: `Start Sandbox`,
-  description: 'Starts a Sandbox from a given Blueprint inside the specified Space. Allows for multiple artifacts and inputs (parameters) using key value pairs in csv format. Please set values for all the artifacts and inputs defined in the Blueprint, default values in the Blueprint that are visible in the UI are not supported. Timeout value needs to be a sufficient number of minutes to allow the Sandbox to finish deployment and become active. Duration parameter sets a TTL policy for how long the Sandbox stays active once deployed (includes deployment time) before it’s automatically deprovisioned',
+  description: 'Starts a Sandbox from a given Blueprint inside the specified Space. Please set values for all the artifacts and inputs defined in the Blueprint, default values in the Blueprint that are visible in the UI are not supported.',
   component: ColonyStartSandboxStageConfig, // stage config
   executionDetailsSections: [ColonyStartSandboxStageExecutionDetails, ExecutionDetailsTasks],
   validateFn: validate,
