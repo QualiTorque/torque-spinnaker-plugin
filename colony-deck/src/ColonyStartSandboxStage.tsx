@@ -20,7 +20,7 @@ import { ColonyStartSandboxStageConfig, validate } from './ColonyStartSandboxSta
  */
 export const colonyStartSandboxStage: IStageTypeConfig = {
   key: 'colonyStartSandbox',
-  label: `Start Sandbox`,
+  label: `Colony Start Sandbox`,
   description: 'Colony Start Sandbox Stage',
   component: ColonyStartSandboxStageConfig, // stage config
   executionDetailsSections: [ColonyStartSandboxStageExecutionDetails, ExecutionDetailsTasks],

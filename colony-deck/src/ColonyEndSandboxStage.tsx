@@ -20,7 +20,7 @@ import { ColonyEndSandboxStageConfig } from './ColonyEndSandboxStageConfig';
  */
 export const colonyEndSandboxStage: IStageTypeConfig = {
   key: 'colonyEndSandbox',
-  label: `End Sandbox`,
+  label: `Colony End Sandbox`,
   description: 'End colony sandbox',
   component: ColonyEndSandboxStageConfig, // stage config
   executionDetailsSections: [ColonyEndSandboxStageExecutionDetails, ExecutionDetailsTasks],
