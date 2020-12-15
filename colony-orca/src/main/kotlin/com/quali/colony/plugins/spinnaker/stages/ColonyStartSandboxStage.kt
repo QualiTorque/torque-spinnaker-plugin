@@ -1,4 +1,4 @@
-package com.quali.colony.plugins.spinnaker
+package com.quali.colony.plugins.spinnaker.stages
 
 import com.netflix.spinnaker.orca.api.pipeline.graph.StageDefinitionBuilder
 import com.netflix.spinnaker.orca.api.pipeline.graph.TaskNode
