@@ -20,7 +20,7 @@ import { ColonyStartSandboxStageConfig, validate } from './ColonyStartSandboxSta
  */
 export const colonyStartSandboxStage: IStageTypeConfig = {
   key: 'colonyStartSandbox',
-  label: `Start Sandbox`,
+  label: `Colony Start Sandbox`,
   description: 'Starts a Sandbox from a given Blueprint inside the specified Space. Please set values for all the artifacts and inputs defined in the Blueprint, default values in the Blueprint that are visible in the UI are not supported.',
   component: ColonyStartSandboxStageConfig, // stage config
   executionDetailsSections: [ColonyStartSandboxStageExecutionDetails, ExecutionDetailsTasks],

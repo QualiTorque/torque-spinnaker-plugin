@@ -20,7 +20,7 @@ import { ColonyEndSandboxStageConfig } from './ColonyEndSandboxStageConfig';
  */
 export const colonyEndSandboxStage: IStageTypeConfig = {
   key: 'colonyEndSandbox',
-  label: `End Sandbox`,
+  label: `Colony End Sandbox`,
   description: 'Ends the specified Sandbox with the provided Space and Sandbox ID. Recommend using environment variables to pull in values from Start Sandbox stage',
   component: ColonyEndSandboxStageConfig, // stage config
   executionDetailsSections: [ColonyEndSandboxStageExecutionDetails, ExecutionDetailsTasks],
