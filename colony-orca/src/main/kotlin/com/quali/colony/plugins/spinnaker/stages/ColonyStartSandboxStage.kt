@@ -9,7 +9,7 @@ import com.quali.colony.plugins.spinnaker.tasks.ColonyVerifySandboxIsReadyTask
 import org.pf4j.Extension
 
 @Extension
-class ColonyStartSandboxStage(config: ColonyConfig) : StageDefinitionBuilder{
+class ColonyStartSandboxStage : StageDefinitionBuilder{
 
     override fun taskGraph(stage: StageExecution, builder: TaskNode.Builder) {
         builder.withTask("startSandbox", ColonyStartSandboxTask::class.java)

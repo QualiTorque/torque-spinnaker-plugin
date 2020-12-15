@@ -21,5 +21,11 @@ jobs:
         with:
           java-version: 11
 
+      - name: run tests
+        run: ./gradlew test
+
+      - name: clean release
+        run: ./gradlew clean
+
       - name: build
         run: ./gradlew releaseBundle

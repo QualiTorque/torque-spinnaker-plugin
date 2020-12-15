@@ -8,6 +8,7 @@ buildscript {
 }
 
 plugins {
+  id "nebula.kotlin" version "$kotlinVersion" apply false
   id("io.spinnaker.plugin.bundler").version("$spinnakerGradleVersion")
   id("com.palantir.git-version").version("0.12.2")
   id("org.jetbrains.kotlin.jvm").version("$kotlinVersion")

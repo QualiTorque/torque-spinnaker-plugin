@@ -7,7 +7,9 @@ class ColonyAuth(private val config: ColonyConfig) {
     fun getAPI(): SandboxAPIServiceImpl {
         val token = this.config.colonyToken
         val url = this.config.colonyUrl
-
+        if (token == null) {
+            throw Throwable("Colony token is not set")
+        }
         val apiConnection = SandboxServiceConnection(url, token, 10, 30)
         // TODO(ddovbii) add some connection testing
         return SandboxAPIServiceImpl(apiConnection)
