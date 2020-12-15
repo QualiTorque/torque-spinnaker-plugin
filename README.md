@@ -1,8 +1,3 @@
-[![Build Status](https://travis-ci.org/QualiSystems/shellfoundry.svg?branch=develop)](https://travis-ci.org/QualiSystems/shellfoundry) [![Coverage Status](https://coveralls.io/repos/github/QualiSystems/shellfoundry/badge.svg?branch=develop)](https://coveralls.io/github/QualiSystems/shellfoundry?branch=develop) [![PyPI](https://img.shields.io/pypi/pyversions/shellfoundry.svg?maxAge=2592000)]() [![PyPI](https://img.shields.io/pypi/v/shellfoundry.svg?maxAge=2592000)]()
-[![Dependency Status](https://dependencyci.com/github/QualiSystems/shellfoundry/badge)](https://dependencyci.com/github/QualiSystems/shellfoundry)
-
----
-
 ![quali](quali.png)
 
 ## CloudShell Colony Plugin for Spinnaker
@@ -54,32 +49,6 @@ spinnaker:
 ```
 3. Execute `hal deploy apply` to deploy the changes.
 4. You should now be able to see 2 new stages provided by this plugin (Colony Start and End Sandbox) in the Deck UI when adding a new stage to your pipeline.
-
-### Plugin User Guide
-
-See the plugin user guide [here](UserGuide.md)
-
-### Plugin TroubleShooting Guide
-
-See the plugin user guide for troubleshooting instructions [here](UserGuide.md)
-
-
-## Basic Usage
-
-`
-
-## Troubleshooting and Help
-
-For questions, bug reports or feature requests, please refer to the [Issue Tracker]. Also, make sure you check out our [Issue Template](.github/issue_template.md).
-
-## Contributing
-
-
-All your contributions are welcomed and encouraged.  We've compiled detailed information about:
-
-* [Contributing](.github/contributing.md)
-* [Creating Pull Requests](.github/pull_request_template.md)
-
 
 ## License
 [Apache License 2.0](https://github.com/QualiSystems/shellfoundry/blob/master/LICENSE)
