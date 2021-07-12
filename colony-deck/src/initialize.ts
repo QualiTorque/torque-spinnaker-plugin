@@ -13,4 +13,6 @@ export const initialize = () => {
   HelpContentsRegistry.register('quali.colonyStartSandboxStage.timeout', 'Set the timeout in minutes for the sandbox to become active.');
   HelpContentsRegistry.register('quali.colonyEndSandboxStage.sandboxId', 'Specify sandbox ID. In most cases you will take it from Start Sandbox Stage context. Example: ${ #stage("Colony Start Sandbox")["outputs"]["sandboxId"]}');
   HelpContentsRegistry.register('quali.colonyEndSandboxStage.space', 'Colony Space Name (please use one from Start Sandbox Stage). Example: ${ #stage("Colony Start Sandbox")["context"]["space"]}');
+  HelpContentsRegistry.register('quali.colonyStartSandboxStage.token', 'Colony Token. Set, if you want to override token in config file');
+
 };

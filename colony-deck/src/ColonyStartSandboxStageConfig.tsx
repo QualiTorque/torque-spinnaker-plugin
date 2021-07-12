@@ -69,12 +69,19 @@ export function ColonyStartSandboxStageConfig(props: IStageConfigProps) {
                   input={(props) => <NumberInput placeholder="20" value = '20' {...props} />}
                   help={<HelpField id="quali.colonyStartSandboxStage.timeout"/>}
           />
-              <FormikFormField
-                  name="duration"
-                  label="Duration (minutes)"
-                  input={(props) => <NumberInput placeholder="30" {...props} />}
-                  help={<HelpField id="quali.colonyStartSandboxStage.duration"/>}
-              />
+          <FormikFormField
+              name="duration"
+              label="Duration (minutes)"
+              input={(props) => <NumberInput placeholder="30" {...props} />}
+              help={<HelpField id="quali.colonyStartSandboxStage.duration"/>}
+          />
+          <FormikFormField
+              name="token"
+              label="Token"
+              input={(props) => <TextInput {...props} />}
+              help={<HelpField id="quali.colonyStartSandboxStage.token"/>}
+              required={false}
+          />
       </>
           )}
       />

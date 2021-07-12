@@ -22,7 +22,8 @@ class ColonyStartSandboxTask(private val config: ColonyConfig) : ColonyBaseTask 
             val duration: Int = 1,
             val timeoutMinutes: Int = 20,
             val artifacts: String = "",
-            val inputs: String = ""
+            val inputs: String = "",
+            val token: String = ""
     )
 
     private val log = LoggerFactory.getLogger(ColonyStartSandboxTask::class.java)
@@ -58,8 +59,11 @@ class ColonyStartSandboxTask(private val config: ColonyConfig) : ColonyBaseTask 
                 true,
                 inputs,
                 duration)
-
-        val api = ColonyAuth(config).getAPI()
+        
+        val token = ctx.token ?: config.colonyToken
+        val url = this.config.colonyUrl
+    
+        val api = ColonyAuth(token, url).getAPI()
         try {
             val res = api.createSandbox(ctx.space, startReq)
             return if (res.isSuccessful) {
