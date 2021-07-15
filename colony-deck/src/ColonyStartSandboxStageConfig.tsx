@@ -1,20 +1,14 @@
 import React from 'react';
 
 import {
-  ExecutionDetailsSection,
-  ExecutionDetailsTasks,
   FormikFormField,
   FormikStageConfig,
   FormValidator,
-  HelpContentsRegistry,
   HelpField,
-  IExecutionDetailsSectionProps,
   IStage,
   IStageConfigProps,
-  IStageTypeConfig,
   NumberInput,
   TextInput,
-  Validators,
 } from '@spinnaker/core';
 
 import './ColonyStartSandboxStage.less';

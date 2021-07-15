@@ -51,7 +51,6 @@ class ColonyStartSandboxTask(private val config: ColonyConfig) : ColonyBaseTask 
         val inputs = parseParamsString(ctx.inputs)
 
         val duration = "PT${ctx.duration}M"
-//        val duration = ctx.duration.minutes.toIsoString()
         val startReq = CreateSandboxRequest(
                 ctx.blueprintName,
                 ctx.sandboxName,
@@ -59,10 +58,17 @@ class ColonyStartSandboxTask(private val config: ColonyConfig) : ColonyBaseTask 
                 true,
                 inputs,
                 duration)
-        
-        val token = ctx.token ?: config.colonyToken
+
+        // first read from params than from config
+        val token: String = ctx.token.ifEmpty {config.colonyToken }
+
+        // if it's still empty fail the build
+        if (token.isEmpty())
+            throw IllegalArgumentException("The token was provided neither in the stage parameters nor in the config")
+        this.addObjectToStageContext(stage, "token", token)
+
         val url = this.config.colonyUrl
-    
+
         val api = ColonyAuth(token, url).getAPI()
         try {
             val res = api.createSandbox(ctx.space, startReq)
@@ -71,11 +77,11 @@ class ColonyStartSandboxTask(private val config: ColonyConfig) : ColonyBaseTask 
                 val sandboxId = res.data?.id
                 // TODO: Remove hardcode
                 if (config.account != "") {
-                    val url = URL(config.colonyUrl)
+                    val urlObj = URL(url)
                     addToOutput(
                         stage,
                         "sandboxUrl",
-                        "${url.protocol}://${config.account}.${url.authority}/${ctx.space}/sandboxes/$sandboxId")
+                        "${urlObj.protocol}://${config.account}.${urlObj.authority}/${ctx.space}/sandboxes/$sandboxId")
                 }
                 log.info("Sandbox $sandboxId has been launched")
                 TaskResult.builder(ExecutionStatus.SUCCEEDED)

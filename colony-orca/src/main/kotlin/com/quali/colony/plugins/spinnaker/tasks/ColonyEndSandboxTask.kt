@@ -14,7 +14,8 @@ class ColonyEndSandboxTask(private val config: ColonyConfig) : ColonyBaseTask {
 
     data class ColonyEndSandboxTaskContext(
             val sandboxId: String,
-            val space: String
+            val space: String,
+            val token: String = ""
     )
 
     private val log = LoggerFactory.getLogger(ColonyEndSandboxTask::class.java)
@@ -22,7 +23,16 @@ class ColonyEndSandboxTask(private val config: ColonyConfig) : ColonyBaseTask {
     override fun execute(stage: StageExecution): TaskResult {
         val ctx = stage.mapTo(ColonyEndSandboxTaskContext::class.java)
         log.info("Task ColonyEndSandboxTask started")
-        val api = ColonyAuth(config).getAPI()
+
+        // first read from params than from config
+        val token: String = ctx.token.ifEmpty {config.colonyToken }
+
+        // if it's still empty fail the build
+        if (token.isEmpty())
+            throw IllegalArgumentException("The token was provided neither in the stage parameters nor in the config")
+
+        val url = this.config.colonyUrl
+        val api = ColonyAuth(token, url).getAPI()
 
         log.info("Stopping sandbox: ${ctx.sandboxId}")
         val res = api.deleteSandbox(ctx.space, ctx.sandboxId)

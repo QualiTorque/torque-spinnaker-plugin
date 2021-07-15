@@ -67,8 +67,7 @@ class ColonyVerifySandboxIsReadyTask(private val config: ColonyConfig) : ColonyB
         val timeoutMinutes = stage.context["timeoutMinutes"] as Int
         val token = stage.context["token"] as String
         val url = config.colonyUrl
-    
-        
+
         // Rewrite task timeout with user input
         taskTimeout = TimeUnit.MINUTES.toMillis(timeoutMinutes.toLong())
 
