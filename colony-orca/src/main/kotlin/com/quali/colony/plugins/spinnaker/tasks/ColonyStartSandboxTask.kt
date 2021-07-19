@@ -22,7 +22,8 @@ class ColonyStartSandboxTask(private val config: ColonyConfig) : ColonyBaseTask 
             val duration: Int = 1,
             val timeoutMinutes: Int = 20,
             val artifacts: String = "",
-            val inputs: String = ""
+            val inputs: String = "",
+            val token: String = ""
     )
 
     private val log = LoggerFactory.getLogger(ColonyStartSandboxTask::class.java)
@@ -30,10 +31,10 @@ class ColonyStartSandboxTask(private val config: ColonyConfig) : ColonyBaseTask 
     private fun parseParamsString(paramsStr: String) : Map<String,String> {
         val holder = HashMap<String,String>()
 
-        if  ((paramsStr.trim().length > 0 ) || (paramsStr.contains("="))) {
-            val keyValues = paramsStr.split(", ")
+        if ((paramsStr.trim().isNotEmpty()) || (paramsStr.contains("="))) {
+            val keyValues = paramsStr.split(",")
             for (keyV in keyValues) {
-                val parts = keyV.split("=", limit = 2)
+                val parts = keyV.trim().split("=", limit = 2)
                 holder[parts[0]] = parts[1]
             }
         }
@@ -50,7 +51,6 @@ class ColonyStartSandboxTask(private val config: ColonyConfig) : ColonyBaseTask 
         val inputs = parseParamsString(ctx.inputs)
 
         val duration = "PT${ctx.duration}M"
-//        val duration = ctx.duration.minutes.toIsoString()
         val startReq = CreateSandboxRequest(
                 ctx.blueprintName,
                 ctx.sandboxName,
@@ -59,7 +59,21 @@ class ColonyStartSandboxTask(private val config: ColonyConfig) : ColonyBaseTask 
                 inputs,
                 duration)
 
-        val api = ColonyAuth(config).getAPI()
+        // first read from params than from config
+        val token: String = ctx.token.ifEmpty {config.colonyToken }
+
+        // if it's still empty fail the build
+        if (token.isEmpty()) {
+            val errorMsg = "The token was provided neither in the stage parameters nor in the config"
+            addErrorMessage(stage, errorMsg)
+            throw IllegalArgumentException(errorMsg)
+        }
+
+        this.addObjectToStageContext(stage, "token", token)
+
+        val url = this.config.colonyUrl
+
+        val api = ColonyAuth(token, url).getAPI()
         try {
             val res = api.createSandbox(ctx.space, startReq)
             return if (res.isSuccessful) {
@@ -67,11 +81,11 @@ class ColonyStartSandboxTask(private val config: ColonyConfig) : ColonyBaseTask 
                 val sandboxId = res.data?.id
                 // TODO: Remove hardcode
                 if (config.account != "") {
-                    val url = URL(config.colonyUrl)
+                    val urlObj = URL(url)
                     addToOutput(
                         stage,
                         "sandboxUrl",
-                        "${url.protocol}://${config.account}.${url.authority}/${ctx.space}/sandboxes/$sandboxId")
+                        "${urlObj.protocol}://${config.account}.${urlObj.authority}/${ctx.space}/sandboxes/$sandboxId")
                 }
                 log.info("Sandbox $sandboxId has been launched")
                 TaskResult.builder(ExecutionStatus.SUCCEEDED)

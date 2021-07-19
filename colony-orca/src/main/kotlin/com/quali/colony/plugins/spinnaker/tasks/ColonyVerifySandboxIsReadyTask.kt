@@ -65,11 +65,13 @@ class ColonyVerifySandboxIsReadyTask(private val config: ColonyConfig) : ColonyB
         val sandboxId = stage.context["sandboxId"] as String
         val space = stage.context["space"] as String
         val timeoutMinutes = stage.context["timeoutMinutes"] as Int
+        val token = stage.context["token"] as String
+        val url = config.colonyUrl
 
         // Rewrite task timeout with user input
         taskTimeout = TimeUnit.MINUTES.toMillis(timeoutMinutes.toLong())
 
-        val api = ColonyAuth(config).getAPI()
+        val api = ColonyAuth(token, url).getAPI()
 
         log.info("Getting sandbox")
         val sandbox = api.getSandboxById(space, sandboxId)
