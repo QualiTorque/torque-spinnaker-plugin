@@ -28,8 +28,11 @@ class ColonyEndSandboxTask(private val config: ColonyConfig) : ColonyBaseTask {
         val token: String = ctx.token.ifEmpty {config.colonyToken }
 
         // if it's still empty fail the build
-        if (token.isEmpty())
-            throw IllegalArgumentException("The token was provided neither in the stage parameters nor in the config")
+        if (token.isEmpty()){
+            val errorMsg = "The token was provided neither in the stage parameters nor in the config"
+            addErrorMessage(stage, errorMsg)
+            throw IllegalArgumentException(errorMsg)
+        }
 
         val url = this.config.colonyUrl
         val api = ColonyAuth(token, url).getAPI()
