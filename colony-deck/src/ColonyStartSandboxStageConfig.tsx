@@ -72,7 +72,7 @@ export function ColonyStartSandboxStageConfig(props: IStageConfigProps) {
           <FormikFormField
               name="token"
               label="Token"
-              input={(props) => <TextInput {...props} />}
+              input={(props) => <TextInput type="password" {...props} />}
               help={<HelpField id="quali.colonyStartSandboxStage.token"/>}
               required={false}
           />

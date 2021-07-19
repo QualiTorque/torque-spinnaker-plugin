@@ -1,11 +1,11 @@
 import React from 'react';
 
 import {
-  FormikFormField,
-  FormikStageConfig,
-  HelpField,
-  IStageConfigProps,
-  TextInput,
+    FormikFormField,
+    FormikStageConfig,
+    HelpField,
+    IStageConfigProps,
+    TextInput,
 } from '@spinnaker/core';
 
 import './ColonyEndSandboxStage.less';
@@ -33,7 +33,7 @@ export function ColonyEndSandboxStageConfig(props: IStageConfigProps) {
           <FormikFormField
               name="token"
               label="Token"
-              input={(props) => <TextInput {...props} />}
+              input={(props) => <TextInput type="password" {...props} />}
               help={<HelpField id="quali.colonyStartSandboxStage.token"/>}
           />
           </>
