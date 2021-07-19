@@ -31,10 +31,10 @@ class ColonyStartSandboxTask(private val config: ColonyConfig) : ColonyBaseTask 
     private fun parseParamsString(paramsStr: String) : Map<String,String> {
         val holder = HashMap<String,String>()
 
-        if  ((paramsStr.trim().length > 0 ) || (paramsStr.contains("="))) {
-            val keyValues = paramsStr.split(", ")
+        if ((paramsStr.trim().isNotEmpty()) || (paramsStr.contains("="))) {
+            val keyValues = paramsStr.split(",")
             for (keyV in keyValues) {
-                val parts = keyV.split("=", limit = 2)
+                val parts = keyV.trim().split("=", limit = 2)
                 holder[parts[0]] = parts[1]
             }
         }
