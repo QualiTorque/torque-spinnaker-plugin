@@ -18,7 +18,7 @@ For Spinnaker 1.22.x and below please use this [branch](https://github.com/Quali
 
 ## Plugin Deployment Guide for Spinnaker <=1.23.x 
 
-1. Add the following to the Halyard config (typically found at `~/.hal/config`) to load the Orca backend
+1. Add the following to the Halyard config (typically found at `~/.hal/config`) to load the Orca backend. 
 ```yaml
   spinnaker:
     extensibility:
@@ -28,7 +28,7 @@ For Spinnaker 1.22.x and below please use this [branch](https://github.com/Quali
           enabled: true
           version: <<VERSION NUMBER>>
           config:
-              colonyToken: <<API Token (Required) >>
+              colonyToken: <<API Token (Not Required) >>
               colonyUrl:  <<API URL (Not required) Default= https://cloudshellcolony.com >>
               account: <<Colony Sub Domain (Not required) EX= colony-demo >>
       repositories:
@@ -36,6 +36,8 @@ For Spinnaker 1.22.x and below please use this [branch](https://github.com/Quali
           id: S3Repo
           url: <<Plugin.json location>>
 ```
+>Note: colonyToken is the authentication token used by default but is no longer required. You can specify the colony token used by each stage in the pipeline.
+
 2. Add the following to `gate-local.yml` in the necessary [profile](https://spinnaker.io/reference/halyard/custom/#custom-profiles) to load the Deck frontend
 ```yaml
 spinnaker:
