@@ -36,7 +36,7 @@ For Spinnaker 1.22.x and below please use this [branch](https://github.com/Quali
           id: S3Repo
           url: <<Plugin.json location>>
 ```
->Note: colonyToken is the authentication token used by default but is no longer required. You can specify the colony token used by each stage in the pipeline.
+>Note: colonyToken is the authentication token used by default but is no longer required. You can specify the Colony token used by each stage in the Spinnaker pipeline.
 
 2. Add the following to `gate-local.yml` in the necessary [profile](https://spinnaker.io/reference/halyard/custom/#custom-profiles) to load the Deck frontend
 ```yaml
