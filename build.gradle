@@ -19,8 +19,8 @@ repositories {
 }
 
 spinnakerBundle {
-  pluginId = "Quali.ColonySandboxPlugin"
-  description = "Cloudshell Colony sandbox plugin"
+  pluginId = "Quali.TorqueSandboxPlugin"
+  description = "Torque Sandbox plugin"
   provider = "https://quali.com"
   version = rootProject.version
 }
@@ -28,7 +28,7 @@ spinnakerBundle {
 version = normalizedVersion()
 
 subprojects {
-  group = "com.quali.colony.plugins.spinnaker"
+  group = "com.quali.torque.plugins.spinnaker"
   version = rootProject.version
 }
 

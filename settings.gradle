@@ -6,10 +6,9 @@ pluginManagement {
   }
 }
 
-rootProject.name = "colony-spinnaker-plugin"
+rootProject.name = "torque-spinnaker-plugin"
 
-//include "random-wait-orca", "random-wait-orca-test", "random-wait-deck", "colony-orca"
-include "colony-orca", "colony-deck"
+include "torque-orca", "torque-deck"
 
 def setBuildFile(project) {
   project.buildFileName = "${project.name}.gradle"

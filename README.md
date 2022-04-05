@@ -23,8 +23,8 @@ For Spinnaker 1.22.x and below please use this [branch](https://github.com/Quali
   spinnaker:
     extensibility:
       plugins:
-        Quali.ColonySandboxPlugin:
-          id: Quali.ColonySandboxPlugin
+        Quali.TorqueSandboxPlugin:
+          id: Quali.TorqueSandboxPlugin
           enabled: true
           version: <<VERSION NUMBER>>
           config:
@@ -45,7 +45,7 @@ spinnaker:
     deck-proxy:
       enabled: true
       plugins:
-        Quali.ColonySandboxPlugin:
+        Quali.TorqueSandboxPlugin:
           enabled: true
           version: <<VERSION NUMBER>>
     repositories:
