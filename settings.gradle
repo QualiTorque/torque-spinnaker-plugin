@@ -1,11 +1,3 @@
-pluginManagement {
-  repositories {
-    mavenLocal()
-    maven { url "https://dl.bintray.com/spinnaker/gradle/" }
-    gradlePluginPortal()
-  }
-}
-
 rootProject.name = "torque-spinnaker-plugin"
 
 include "torque-orca", "torque-deck"
