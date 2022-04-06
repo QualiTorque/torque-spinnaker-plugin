@@ -1,6 +1,7 @@
 package com.quali.torque.plugins.spinnaker.service
 
 import com.google.gson.GsonBuilder
+import com.quali.torque.plugins.spinnaker.utils.StatusService
 import com.quali.torque.plugins.spinnaker.api.CreateSandboxRequest
 import com.quali.torque.plugins.spinnaker.api.CreateSandboxResponse
 import com.quali.torque.plugins.spinnaker.api.ResponseData
@@ -60,8 +61,21 @@ class SandboxAPIServiceImpl(private val connection: SandboxServiceConnection) : 
                 .setLenient()
                 .create()
         val builder = OkHttpClient.Builder()
+
+        // add user-agent header for usage reports
+        val version = StatusService().getVersion()
+        builder.addInterceptor { chain ->
+            val original = chain.request()
+            val requestBuilder = original.newBuilder()
+                .header("User-Agent", "Torque-Spinnaker-Plugin/${version}")
+
+            val request = requestBuilder.build()
+            chain.proceed(request)
+        }
+
         builder.connectTimeout(connection.connectionTimeoutSec.toLong(), TimeUnit.SECONDS)
         builder.readTimeout(connection.readTimeoutSec.toLong(), TimeUnit.SECONDS)
+
         val client = builder.build()
         val baseUrl = String.format("%1\$s", connection.address)
         val retrofit = Retrofit.Builder()
