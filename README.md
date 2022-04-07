@@ -5,9 +5,9 @@
 
 ## Torque Plugin for Spinnaker
 
-This plugin provides support for Torque via Pipelines in Spinnaker 1.23.0 and above
+This plugin provides support for Torque via Pipelines in Spinnaker 1.23.0 and above.
 
-For Spinnaker 1.22.x and below please use this [branch](https://github.com/QualiSystemsLab/torque-spinnaker-plugin/tree/1.22.x) 
+For Spinnaker 1.22.x and below please use this [branch](https://github.com/QualiSystemsLab/torque-spinnaker-plugin/tree/1.22.x). 
 
 ### Version Compatibility
 | Plugin  | Spinnaker Platform |
