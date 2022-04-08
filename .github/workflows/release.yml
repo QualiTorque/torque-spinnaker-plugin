@@ -87,4 +87,5 @@ jobs:
             title: 'Update Plugin Repository with Latest Release'
             body: |
               - Updating plugins.json release definition file 
-            branch: 'release-${{ steps.get_project_info.outputs.VERSION }}' 
+            branch: 'release-${{ steps.get_project_info.outputs.VERSION }}'
+            base: ${{ github.head_ref }}
