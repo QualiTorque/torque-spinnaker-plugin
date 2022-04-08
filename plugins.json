@@ -1,0 +1,18 @@
+[
+  {
+    "id": "Quali.TorqueSandboxPlugin",
+    "description": "Torque Sandbox plugin",
+    "provider": "https://quali.com",
+    "releases": [
+      {
+        "version": "0.2.3",
+        "date": "2022-04-08T12:30:36.784710Z",
+        "requires": "orca>=0.0.0,deck>=0.0.0",
+        "sha512sum": "6a24707dbbce003bd40a88df5941ec2a64a9b0d58081398f280798f800734b600cfd8ca403479bb9752f86b38cf179a92fdc9c84b18d557bde21effa7888f7e9",
+        "preferred": false,
+        "compatibility": [],
+        "url": "https://github.com/QualiTorque/torque-spinnaker-plugin/releases/download/0.2.3/torque-spinnaker-plugin-0.2.3.zip"
+      }
+    ]
+  }
+]
