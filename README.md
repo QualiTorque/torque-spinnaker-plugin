@@ -1,4 +1,4 @@
-![Build Status](https://img.shields.io/github/workflow/status/QualiSystemsLab/torque-spinnaker-plugin/Build)
+[![Build](https://github.com/QualiTorque/torque-spinnaker-plugin/actions/workflows/build.yml/badge.svg)](https://github.com/QualiTorque/torque-spinnaker-plugin/actions/workflows/build.yml)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 ![quali](quali.png)
