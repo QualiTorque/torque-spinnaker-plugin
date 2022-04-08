@@ -82,10 +82,10 @@ jobs:
       - name: create pull request
         uses: peter-evans/create-pull-request@v3
         with:
+            base: 'master'
             token: ${{ secrets.GITHUB_TOKEN }}
             commit-message: Update plugin repository file
             title: 'Update Plugin Repository with Latest Release'
             body: |
               - Updating plugins.json release definition file 
             branch: 'release-${{ steps.get_project_info.outputs.VERSION }}'
-            base: ${{ github.head_ref }}
