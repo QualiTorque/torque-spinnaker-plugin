@@ -10,6 +10,9 @@ jobs:
     name: Release Plugin
     runs-on: ubuntu-latest
     steps:
+      - name: download jq
+        run: sudo apt-get install jq
+
       - name: checkout code
         uses: actions/checkout@v2
 
@@ -27,6 +30,7 @@ jobs:
           echo ::set-output name=PROJECT::$(basename `pwd`)
           echo ::set-output name=PROJECT_KEBAB::$(basename `pwd` | sed 's/\([a-z0-9]\)\([A-Z]\)/\1_\L\2/g')
           echo ::set-output name=VERSION::$(./gradlew printVersion -q)
+          echo ::set-output name=REPO::${GITHUB_REPOSITORY}
 
       - name: create release
         id: create_release
@@ -50,3 +54,37 @@ jobs:
           asset_path: ./build/distributions/${{ steps.get_project_info.outputs.PROJECT }}-${{ steps.get_project_info.outputs.VERSION }}.zip
           asset_name: ${{ steps.get_project_info.outputs.PROJECT }}-${{ steps.get_project_info.outputs.VERSION }}.zip
           asset_content_type: application/zip
+      
+      - name: mutate plugin-info.json
+        id: mutate-package-info
+        env:
+          ARTIFACT_URL: https://github.com/${{ steps.get_project_info.outputs.REPO }}/releases/download/${{ steps.get_project_info.outputs.VERSION }}/${{ steps.get_project_info.outputs.PROJECT }}-${{ steps.get_project_info.outputs.VERSION }}.zip
+          VERSION: ${{ steps.get_project_info.outputs.VERSION }}
+        run: cat ./build/distributions/plugin-info.json | jq -r --arg VERSION "$VERSION" '.releases |= map(if .version == $VERSION then . + '{\"url\":\"$ARTIFACT_URL\"}' else . end)' > ./plugins-temp.json
+
+      - name: merge plugins.json
+        id: merge-plugin-repository
+        env:
+          PLUGIN_FILE: './plugins.json'
+          PLUGIN_TEMP: './plugins-temp.json'
+          TEMP_FILE: './tmp.json'
+        run: |
+          if !  [[ -f "$PLUGIN_FILE" ]]; then 
+            touch "$PLUGIN_FILE"; 
+            echo [] >> "$PLUGIN_FILE";
+            jq 'reduce inputs as $i (.; .[0] = $i)' "$PLUGIN_FILE" "$PLUGIN_TEMP" > "$TEMP_FILE";
+          else
+            jq 'reduce inputs as $i (.; .[0].releases += $i.releases)' "$PLUGIN_FILE" "$PLUGIN_TEMP" > "$TEMP_FILE";
+          fi
+          rm $PLUGIN_FILE
+          rm $PLUGIN_TEMP 
+          mv $TEMP_FILE $PLUGIN_FILE
+      - name: create pull request
+        uses: peter-evans/create-pull-request@v3
+        with:
+            token: ${{ secrets.GITHUB_TOKEN }}
+            commit-message: Update plugin repository file
+            title: 'Update Plugin Repository with Latest Release'
+            body: |
+              - Updating plugins.json release definition file 
+            branch: 'release-${{ steps.get_project_info.outputs.VERSION }}' 
