@@ -13,6 +13,6 @@ import com.netflix.spinnaker.kork.plugins.api.PluginConfiguration
 
 data class TorqueConfig(
         var torqueToken: String = "",
-        var torqueUrl: String = "https://app.qtorque.io",
+        var torqueUrl: String = "https://qtorque.io",
         var account: String = ""
 )
