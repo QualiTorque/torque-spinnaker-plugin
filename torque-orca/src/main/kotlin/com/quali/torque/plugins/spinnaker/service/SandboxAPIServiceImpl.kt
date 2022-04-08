@@ -67,7 +67,7 @@ class SandboxAPIServiceImpl(private val connection: SandboxServiceConnection) : 
         builder.addInterceptor { chain ->
             val original = chain.request()
             val requestBuilder = original.newBuilder()
-                .header("User-Agent", "Torque-Spinnaker-Plugin/${version}")
+                .header("User-Agent", "Torque-Plugin-Spinnaker/${version}")
 
             val request = requestBuilder.build()
             chain.proceed(request)
