@@ -6,8 +6,10 @@ import com.netflix.spinnaker.orca.api.pipeline.models.StageExecution
 import com.quali.torque.plugins.spinnaker.TorqueAuth
 import com.quali.torque.plugins.spinnaker.TorqueBaseTask
 import com.quali.torque.plugins.spinnaker.TorqueConfig
+import com.quali.torque.client.api.EnvironmentApi
 import org.pf4j.Extension
 import org.slf4j.LoggerFactory
+import java.lang.Exception
 
 @Extension
 class TorqueEndSandboxTask(private val config: TorqueConfig) : TorqueBaseTask {
@@ -35,22 +37,21 @@ class TorqueEndSandboxTask(private val config: TorqueConfig) : TorqueBaseTask {
         }
 
         val url = this.config.torqueUrl
-        val api = TorqueAuth(token, url).getAPI()
+        val api = EnvironmentApi(TorqueAuth(token, url).getClient())
 
         log.info("Stopping sandbox: ${ctx.sandboxId}")
-        val res = api.deleteSandbox(ctx.space, ctx.sandboxId)
-
-        return if (res.isSuccessful) {
+        return try {
+            api.apiSpacesSpaceNameEnvironmentsEnvironmentIdDelete(ctx.space, ctx.sandboxId)
             log.info("Sandbox ${ctx.sandboxId} has been stopped")
             TaskResult.builder(ExecutionStatus.SUCCEEDED)
-                    .context(stage.context)
-                    .outputs(stage.outputs)
-                    .build()
-        } else {
-            addErrorMessage(stage, res.error)
+                .context(stage.context)
+                .outputs(stage.outputs)
+                .build()
+        } catch (e: Exception) {
+            addErrorMessage(stage, e.message)
             TaskResult.builder(ExecutionStatus.TERMINAL)
-                    .context(stage.context)
-                    .build()
+                .context(stage.context)
+                .build()
         }
     }
 }

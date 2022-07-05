@@ -7,27 +7,21 @@ import {
 } from '@spinnaker/core'
 
 export function TorqueStartSandboxStageExecutionDetails(props: IExecutionDetailsSectionProps) {
-  var apps = props.stage.outputs.QuickLinks;
-  var sburl = props.stage.outputs.sandboxUrl;
+  let links: Map<string,string> = props.stage.outputs.QuickLinks;
+  let sandboxUrl = props.stage.outputs.sandboxUrl;
 
-  const items=[];
+  const items: JSX.Element[] = [];
 
-  if(apps){
-    for(let app of apps) {
-        const href=[]
-        for(let link of app.shortcuts){
-          href.push(<li><a href={link}>{link}</a></li>)
-        }
-        items.push(<p><b>{app.name}: </b>{href}</p>)
-    }
-  }
+  links.forEach((name: string, link: string) => {
+      items.push(<p><b>{name}: </b><a href={link}>{link}</a></p>)
+  })
 
   return (
     <ExecutionDetailsSection name={props.name} current={props.current}>
       <StageFailureMessage stage={props.stage} message={props.stage.outputs.failureMessage} />
       <div>
 
-        <p>Started sandbox with id: <b> <a href={sburl}> {props.stage.outputs.sandboxId} </a></b></p>
+        <p>Started sandbox with id: <b> <a href={sandboxUrl}> {props.stage.outputs.sandboxId} </a></b></p>
         <div>
             {items}
         </div>

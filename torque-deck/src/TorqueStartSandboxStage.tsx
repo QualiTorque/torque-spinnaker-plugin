@@ -21,7 +21,7 @@ import { TorqueStartSandboxStageConfig, validate } from './TorqueStartSandboxSta
 export const torqueStartSandboxStage: IStageTypeConfig = {
   key: 'torqueStartSandbox',
   label: `Torque Start Sandbox`,
-  description: 'Starts a Sandbox from a given Blueprint inside the specified Space. Please set values for all the artifacts and inputs defined in the Blueprint, default values in the Blueprint that are visible in the UI are not supported.',
+  description: 'Starts a Sandbox from a given Blueprint inside the specified Space. Please set values for all inputs defined in the Blueprint, default values in the Blueprint that are visible in the UI are not supported.',
   component: TorqueStartSandboxStageConfig, // stage config
   executionDetailsSections: [TorqueStartSandboxStageExecutionDetails, ExecutionDetailsTasks],
   validateFn: validate,
