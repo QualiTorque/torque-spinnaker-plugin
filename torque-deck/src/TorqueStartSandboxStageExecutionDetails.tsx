@@ -11,10 +11,11 @@ export function TorqueStartSandboxStageExecutionDetails(props: IExecutionDetails
   let sandboxUrl = props.stage.outputs.sandboxUrl;
 
   const items: JSX.Element[] = [];
-
-  links.forEach((name: string, link: string) => {
-      items.push(<p><b>{name}: </b><a href={link}>{link}</a></p>)
-  })
+  if (links) {
+      for (const [name, link] of links) {
+          items.push(<p><b>{name}: </b><a href={link}>{link}</a></p>)
+      }
+  }
 
   return (
     <ExecutionDetailsSection name={props.name} current={props.current}>
