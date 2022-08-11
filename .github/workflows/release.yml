@@ -27,6 +27,7 @@ jobs:
           repository: QualiTorque/torque-api-client-java
           path: client
           ref: master
+          token: ${{ secrets.GH_PAT }}
 
       - name: build java API client
         working-directory: ./client
