@@ -21,6 +21,15 @@
         "preferred": false,
         "compatibility": [],
         "url": "https://github.com/QualiTorque/torque-spinnaker-plugin/releases/download/0.2.4/torque-spinnaker-plugin-0.2.4.zip"
+      },
+      {
+        "version": "0.2.5.dirty-SNAPSHOT",
+        "date": "2022-08-11T13:48:37.896245Z",
+        "requires": "orca>=0.0.0,deck>=0.0.0",
+        "sha512sum": "82f273a2737d78061d6d012a3b62e07c436f0c97faee575f89394435a8d5db5f3a351a588a32f7bf7ac9fdc03e8e8ab42396d263b1e7200a4b85d964d44ebf51",
+        "preferred": false,
+        "compatibility": [],
+        "url": "https://github.com/QualiTorque/torque-spinnaker-plugin/releases/download/0.2.5.dirty-SNAPSHOT/torque-spinnaker-plugin-0.2.5.dirty-SNAPSHOT.zip"
       }
     ]
   }
