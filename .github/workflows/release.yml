@@ -26,6 +26,7 @@ jobs:
         with:
           repository: QualiTorque/torque-api-client-java
           path: client
+          ref: master
 
       - name: build java API client
         working-directory: ./client
