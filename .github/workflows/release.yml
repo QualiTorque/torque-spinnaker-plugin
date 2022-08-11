@@ -19,10 +19,27 @@ jobs:
       - name: set up java
         uses: actions/setup-java@v1
         with:
-          java-version: 11
+          java-version: 8
+
+      - name: checkout API client
+        uses: actions/checkout@v2
+        with:
+          repository: QualiTorque/torque-api-client-java
+          path: client
+          ref: master
+          token: ${{ secrets.GH_PAT }}
+
+      - name: build java API client
+        working-directory: ./client
+        run: mvn install
 
       - name: build
         run: ./gradlew releaseBundle
+
+      - name: set up java
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
 
       - name: get project info
         id: get_project_info
