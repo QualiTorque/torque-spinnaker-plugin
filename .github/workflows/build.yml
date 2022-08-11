@@ -21,5 +21,15 @@ jobs:
         with:
           java-version: 11
 
+      - name: checkout API client
+        uses: actions/checkout@v2
+        with:
+          repository: QualiTorque/torque-api-client-java
+          path: client
+
+      - name: build java API client
+        working-directory: ./client
+        run: mvn install
+
       - name: build
         run: ./gradlew releaseBundle
