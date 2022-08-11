@@ -100,8 +100,6 @@ class TorqueVerifySandboxIsReadyTask(private val config: TorqueConfig) : TorqueB
 
         log.info("Getting sandbox")
         val sandboxResponse = api.apiSpacesSpaceNameEnvironmentsEnvironmentIdGet(space, sandboxId)
-//        val sandboxData = Gson().fromJson(sandbox.rawBodyJson, SingleSandbox::class.java)
-
         val isActive: Boolean
 
         try {

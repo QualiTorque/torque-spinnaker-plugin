@@ -70,6 +70,7 @@ class TorqueStartSandboxTask(private val config: TorqueConfig) : TorqueBaseTask 
 
         val api = EnvironmentApi(TorqueAuth(token, url).getClient())
         try {
+            log.info(req.toString())
             val res = api.apiSpacesSpaceNameEnvironmentsPost(ctx.space, req)
             val sandboxId = res.id
 
