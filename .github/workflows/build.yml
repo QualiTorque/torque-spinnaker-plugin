@@ -39,4 +39,6 @@ jobs:
           java-version: 11
 
       - name: build
-        run: ./gradlew releaseBundle
+        run: |
+          rm -rf ./client
+          ./gradlew releaseBundle

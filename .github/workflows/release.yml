@@ -39,7 +39,9 @@ jobs:
           java-version: 11
 
       - name: build
-        run: ./gradlew releaseBundle
+        run: |
+          rm -rf ./client
+          ./gradlew releaseBundle
 
       - name: get project info
         id: get_project_info
