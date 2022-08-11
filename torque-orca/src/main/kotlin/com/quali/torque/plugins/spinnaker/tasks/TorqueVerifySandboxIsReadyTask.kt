@@ -75,9 +75,10 @@ class TorqueVerifySandboxIsReadyTask(private val config: TorqueConfig) : TorqueB
     private fun getSandboxEndpoints(
         environment: QualiColonyGatewayApiModelResponsesEnvironmentResponse
     ): Map<String, String> {
-        val sc: MutableMap<String, String> = HashMap()
+        val sc: HashMap<String, String> = HashMap()
+        log.info(environment.details.state.outputs.toString())
         for (output in environment.details.state.outputs) {
-            if (output.kind === "link") {
+            if (output.kind == "link") {
                 log.info(String.format("Link output %s found: %s", output.name, output.value))
                 sc[output.name] = output.value
             }
