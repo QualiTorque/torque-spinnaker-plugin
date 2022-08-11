@@ -41,14 +41,6 @@ export function TorqueStartSandboxStageConfig(props: IStageConfigProps) {
                 help={<HelpField id="quali.torqueStartSandboxStage.space"/>}
             />
 
-             <FormikFormField
-                 name="artifacts"
-                 label="Artifacts"
-                 input={(props) => <TextInput {...props} />}
-                 help={<HelpField id="quali.torqueStartSandboxStage.artifacts"/>}
-                 required={false}
-             />
-
             <FormikFormField
                 name="inputs"
                 label="Inputs"

@@ -47,9 +47,15 @@ spinnaker:
 3. Execute `hal deploy apply` to deploy the changes.
 4. You should now be able to see 2 new stages provided by this plugin (Torque Start and End Sandbox) in the Deck UI when adding a new stage to your pipeline.
 
+## How To Build
+
+* clone a [torque-api-client-java](https://github.com/QualiTorque/torque-api-client-java)
+* Build and install **torque-api-client-java** into local Maven repository using `mvn install` command from its dir
+* go back to **torque-spinnaker-plugin** folder and run `./gradlew releaseBundle`
+
 ## Usage
 
-After installation you will have two stages added to your Spinnaker stages list:
+After installation, you will have two stages added to your Spinnaker stages list:
 
 ![list](pics/list-stages.png)
 
@@ -64,8 +70,6 @@ After installation you will have two stages added to your Spinnaker stages list:
 **Sandbox Name** - Provide a name for the sandbox.
 
 **Space Name** - The name of the Torque Space your repository is connected to.
-
-**Artifacts** - [Optional] A comma-separated list of artifacts per application. These are relative to the artifact repository's root defined in Torque. Example: appName1=path1, appName2=path2.
 
 **Inputs** - [Optional] You can provide the blueprint's inputs as a comma-separated list of key=value.
 For example: key1=value1, key2=value2.
